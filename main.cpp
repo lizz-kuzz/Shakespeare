@@ -1,46 +1,66 @@
 #include <stdio.h>
 #include "include.h"
-
+#include <math.h>
 
 int main()
 {
-  const char *INPUT_FILE_WITH_TEXT = "C:\\Users\\User\\Desktop\\programs\\shakespeare\\shakespeare.txt";
-  const char *OUTPUT_TEXT_TO_FILE =  "C:\\Users\\User\\Desktop\\programs\\shakespeare\\shakespeare_write.txt";
-                        
-  FILE *file = fopen(INPUT_FILE_WITH_TEXT, "r");
+  poem shakespeare = {
+    .poem = NULL,
+    .sorting_poem = NULL,
+    .save_point_poem = NULL,
+    .NUMBER = 0,
+  };
 
-  assert(file != nullptr && "coudn't open file");
+  shakespeare.poem = read_file();  // работает
 
-  if (file == NULL)
-    printf("Could not open file.\n");
-                        
-  const int NUMBER =  num_of_rows(file);
-  const int SIMBOLS = count_simvols(file);
+  assert(shakespeare.poem != NULL && "null pointer");
 
-  char *shakespeare =             (char *) calloc(SIMBOLS + 1, sizeof(char));  
-  char **sorting_shakespeare =    (char **) calloc(NUMBER + 1, sizeof(char *));
-  char **save_point_shakespeare = (char **) calloc(NUMBER + 1, sizeof(char *)); 
+  printf("fghgfd\n");
+  // text_normalize(&shakespeare);
+  shakespeare.NUMBER = num_of_rows(shakespeare.poem);
 
-  fread(shakespeare, sizeof(char), SIMBOLS, file);
-  fclose(file);
+  // const int NUMBER = num_of_rows(shakespeare);  //work  
 
 
-  assert(shakespeare != NULL && "null pointer");
-  assert(sorting_shakespeare != NULL && "null pointer");
-  assert(save_point_shakespeare != NULL && "null pointer");
+  // char **sorting_shakespeare =    (char **) calloc(NUMBER + 1, sizeof(char *));
+  // char **save_point_shakespeare = (char **) calloc(NUMBER + 1, sizeof(char *)); 
 
-  char *point_shakespeare = shakespeare;
-  sorting_shakespeare[0] = point_shakespeare; 
-  save_point_shakespeare[0] = point_shakespeare;
+  // assert(sorting_shakespeare != NULL && "null pointer");
+  // assert(save_point_shakespeare != NULL && "null pointer");
+
  
-  printf("%d\n", isalpha('\''));
+
+ 
+
+  shakespeare.sorting_poem  =    (char **) calloc(shakespeare.NUMBER + 1, sizeof(char *));
+  shakespeare.save_point_poem =  (char **) calloc(shakespeare.NUMBER + 1, sizeof(char *)); 
+
+  // fread(shakespeare, sizeof(char), SIMBOLS, file);
+  // fclose(file);
+
+/* исправить надо эти вещи
+
+  Text* text = (Text*) calloc(1, sizeof(Text));
+  Text_Ctor(text, shakespeare);
+  {
+   text->str_ptrs = (char**) calloc(fdsafsda, sizeof(char)); 
+  }
+*/
+
+
+
+  char *point_shakespeare = shakespeare.poem;
+  shakespeare.sorting_poem[0] = point_shakespeare; 
+  shakespeare.save_point_poem[0] = point_shakespeare;
+ 
+ 
 
   int count = 0;
-  for (int i = 1; (i <= NUMBER) && *(point_shakespeare + 1) != '\0'; point_shakespeare++)  { 
+  for (int i = 1; (i <= shakespeare.NUMBER) && *(point_shakespeare) != '\0'; point_shakespeare++)  { 
     if (*point_shakespeare == '\n')  {
       *point_shakespeare = '\0';
 
-      save_point_shakespeare[i] = point_shakespeare + 1;
+      shakespeare.save_point_poem[i] = point_shakespeare + 1;
 
       if ((*(point_shakespeare + 1)) == '\n')
         continue;
@@ -48,26 +68,26 @@ int main()
   
       if ((*(point_shakespeare + 1)) == ' ' && (*(point_shakespeare + 2)) == ' ' &&
           (*(point_shakespeare + 3)) == ' ' && (*(point_shakespeare + 4)) == ' ')  { 
-            sorting_shakespeare[i] = point_shakespeare + 5;
+            shakespeare.sorting_poem[i] = point_shakespeare + 5;
             point_shakespeare += 4;
           }
 
       count++;
-      sorting_shakespeare[i] = point_shakespeare + 1;
+      shakespeare.sorting_poem[i] = point_shakespeare + 1;
 
       i++;
     }
   }
 
-  normal_sorting(sorting_shakespeare, count);
-  unnormal_sorting(sorting_shakespeare, count);
+  normal_sorting(shakespeare.sorting_poem, count);
+  unnormal_sorting(shakespeare.sorting_poem, count);
 
-  print_to_file(save_point_shakespeare, count, OUTPUT_TEXT_TO_FILE);
+  print_to_file(shakespeare.save_point_poem, count);
 
-  free(shakespeare);
-  free(sorting_shakespeare);
-  free(save_point_shakespeare);
-
+  free(shakespeare.sorting_poem);
+  free(shakespeare.poem);
+  free(shakespeare.save_point_poem);
+  printf("fghg"); 
   return 0;
 
 }

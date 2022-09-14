@@ -29,7 +29,7 @@ void normal_sorting(char **sort, int NUMBER)  {
         }
     }
 
-
+    // print_to_file(sort, NUMBER);
     FILE *file_write = fopen(OUTPUT_FILE_WITH_SORTING_TEXT, "w");
 
     assert(file_write != nullptr && "coudn't open file");
@@ -69,7 +69,7 @@ void unnormal_sorting(char **sort, int NUMBER)  {
            }
         }
     }
-
+    // print_to_file(sort, NUMBER);
     FILE *file_write = fopen(OUTPUT_FILE_WITH_SORTING_TEXT, "w");
 
     assert(file_write != nullptr && "coudn't open file");
