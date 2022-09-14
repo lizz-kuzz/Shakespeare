@@ -8,8 +8,9 @@
 
 typedef struct {
     char  *poem;
-    char **sorting_poem;
-    char **save_point_poem;
+    char **sorting_begin;
+    char **sorting_end;
+    char **save_point;
     int    NUMBER;
 } poem;
 
@@ -22,9 +23,8 @@ void  unnormal_sorting(char **sort, int NUMBER);
 int   unnormal_strcmp(char *s, char *t);
 int   normal_strcmp(char *s, char *t);
 
-void  print_to_file(char **save_point, int count);
-
+void  print_to_file(poem *text);
+void  text_normalize(poem *text);
 char  *read_file();
-// void  text_normalize(poem *text);
 
 #endif

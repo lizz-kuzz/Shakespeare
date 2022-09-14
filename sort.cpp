@@ -14,7 +14,6 @@ int normal_strcmp(char *s, char *t)  {
 }
 
 void normal_sorting(char **sort, int NUMBER)  {
-
     const char *OUTPUT_FILE_WITH_SORTING_TEXT = "C:\\Users\\User\\Desktop\\programs\\shakespeare\\shakespeare_sorting1.txt";
     
     assert(sort != nullptr && "null pointer");
@@ -28,8 +27,6 @@ void normal_sorting(char **sort, int NUMBER)  {
            }
         }
     }
-
-    // print_to_file(sort, NUMBER);
     FILE *file_write = fopen(OUTPUT_FILE_WITH_SORTING_TEXT, "w");
 
     assert(file_write != nullptr && "coudn't open file");
@@ -39,7 +36,6 @@ void normal_sorting(char **sort, int NUMBER)  {
 
     fclose(file_write);
 }
-
 
 int unnormal_strcmp(char *s, char *t)  {
     assert((s != nullptr || t != nullptr) && "null pointer");
@@ -55,6 +51,7 @@ int unnormal_strcmp(char *s, char *t)  {
     }
     return *s - *t;
 }
+
 void unnormal_sorting(char **sort, int NUMBER)  {
     const char *OUTPUT_FILE_WITH_SORTING_TEXT = "C:\\Users\\User\\Desktop\\programs\\shakespeare\\shakespeare_sorting2.txt";
     
@@ -69,7 +66,7 @@ void unnormal_sorting(char **sort, int NUMBER)  {
            }
         }
     }
-    // print_to_file(sort, NUMBER);
+
     FILE *file_write = fopen(OUTPUT_FILE_WITH_SORTING_TEXT, "w");
 
     assert(file_write != nullptr && "coudn't open file");
@@ -79,3 +76,4 @@ void unnormal_sorting(char **sort, int NUMBER)  {
 
     fclose(file_write);
 }
+
