@@ -445,10 +445,10 @@ KING CLAUDIUS
     We doubt it nothing: heartily farewell.
 
     Exeunt VOLTIMAND and CORNELIUS
-    And now, Laertes, what's the news with you?
+    and now, Laertes, what's the news with you?
     You told us of some suit; what is't, Laertes?
     You cannot speak of reason to the Dane,
-    And loose your voice: what wouldst thou beg, Laertes,
+    and loose your voice: what wouldst thou beg, Laertes,
     That shall not be my offer, not thy asking?
     The head is not more native to the heart,
     The hand more instrumental to the mouth,
@@ -463,7 +463,7 @@ LAERTES
     To show my duty in your coronation,
     Yet now, I must confess, that duty done,
     My thoughts and wishes bend again toward France
-    And bow them to your gracious leave and pardon.
+    and bow them to your gracious leave and pardon.
 
 KING CLAUDIUS
 
@@ -479,7 +479,7 @@ LORD POLONIUS
 KING CLAUDIUS
 
     Take thy fair hour, Laertes; time be thine,
-    And thy best graces spend it at thy will!
+    and thy best graces spend it at thy will!
     But now, my cousin Hamlet, and my son,--
 
 HAMLET
@@ -499,7 +499,7 @@ QUEEN GERTRUDE
     Good Hamlet, cast thy nighted colour off,
     And let thine eye look like a friend on Denmark.
     Do not for ever with thy vailed lids
-    Seek for thy noble father in the dust:
+    seek for thy noble father in the dust:
     Thou know'st 'tis common; all that lives must die,
     Passing through nature to eternity.
 
@@ -514,7 +514,7 @@ QUEEN GERTRUDE
 
 HAMLET
 
-    Seems, madam! nay it is; I know not 'seems.'
+    seems, madam! nay it is; I know not 'seems.'
     'Tis not alone my inky cloak, good mother,
     Nor customary suits of solemn black,
     Nor windy suspiration of forced breath,
@@ -574,7 +574,7 @@ KING CLAUDIUS
     Why, 'tis a loving and a fair reply:
     Be as ourself in Denmark. Madam, come;
     This gentle and unforced accord of Hamlet
-    Sits smiling to my heart: in grace whereof,
+    sits smiling to my heart: in grace whereof,
     No jocund health that Denmark drinks to-day,
     But the great cannon to the clouds shall tell,
     And the king's rouse the heavens all bruit again,

@@ -5,9 +5,7 @@ int main()
 {
   poem shakespeare = {
     .poem = NULL,
-    .sorting_begin= NULL,
-    .sorting_end= NULL,
-    .save_point = NULL,
+    .sorting = NULL,
     .NUMBER = 0,
   };
 
@@ -17,11 +15,12 @@ int main()
 
   text_normalize(&shakespeare);
 
-  normal_sorting(shakespeare.sorting_begin, shakespeare.NUMBER);
-  unnormal_sorting(shakespeare.sorting_end, shakespeare.NUMBER);
+  sorting_and_print_to_file(&shakespeare);
 
-  print_to_file(&shakespeare);
-
-  return 0;
+  // char *arr[2] = {"for", "For"};
+  // char **arr_1 = arr;
+  // sort_first_letter(arr_1, 2);
+  // printf("\n%s\n%s\n" , arr[0], arr[1]);
+  // return 0;
 
 }
