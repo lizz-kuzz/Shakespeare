@@ -17,10 +17,11 @@ int main()
 
   sorting_and_print_to_file(&shakespeare);
 
-  // char *arr[2] = {"for", "For"};
-  // char **arr_1 = arr;
-  // sort_first_letter(arr_1, 2);
-  // printf("\n%s\n%s\n" , arr[0], arr[1]);
-  // return 0;
+  // char *arr[] = {"for", "For", "aaa", "AAAA", "Bbb", "Bab"};
+  // qsort(arr, sizeof(arr)/sizeof(char*), sizeof(char *), strcmp_first_letter);
+  // // sort_first_letter(arr, 6);
+  // printf("\n%s\n%s\n%s\n%s\n%s\n%s\n\n", arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]);
+
+  return 0;
 
 }

@@ -32,7 +32,7 @@ int num_of_rows(char *text)  {
 }
 
 int count_symbols(FILE *file)  {
-
+// stat, getsize
     fseek(file, 0, SEEK_END);
     int number = ftell(file);
     fseek(file, 0, SEEK_SET);
@@ -46,7 +46,6 @@ void text_cpy(poem *text, poem *cpy_text) {
 
     cpy_text->NUMBER = text->NUMBER;
     cpy_text->sorting = (char **) calloc(text->NUMBER + 1, sizeof(char *)); 
-
 
     for (int i = 0; (i <= cpy_text->NUMBER); i++)  { 
         cpy_text->sorting[i] = text->sorting[i];
@@ -68,23 +67,21 @@ void sorting_and_print_to_file(poem *text)  {
 
     FILE *file_write = fopen(NAME_OF_FILE, "w");
 
-
     assert(file_write != nullptr && "coudn't open file");
     fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
     fprintf(file_write, "                    TEXT SORTED BY FIRST LETTERS                        ");
     fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-    // sort_qsort_first_letter(text);
+    sort_qsort_first_letter(text);
     sort_first_letter(text->sorting, text->NUMBER);
 
     for (int i = 0; i < text->NUMBER; i++)
         fprintf(file_write, "%s\n", text->sorting[i]); 
 
-
     fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
     fprintf(file_write, "                    TEXT SORTED BY LAST LETTERS                         ");
     fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-    // sort_qsort_first_letter(text);
-    sort_last_letter(text->sorting, text->NUMBER);
+    sort_qsort_last_letter(text);
+    // sort_last_letter(text->sorting, text->NUMBER);
 
     for (int i = 0; i < text->NUMBER; i++)
         fprintf(file_write, "%s\n", text->sorting[i]);

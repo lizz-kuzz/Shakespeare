@@ -2,33 +2,48 @@
 #include "include.h"
 
 void  sort_qsort_first_letter(poem *text) {
-    qsort(text->sorting, text->NUMBER, sizeof(char **), *strcmp_first_letter);
+    qsort(text->sorting, text->NUMBER, sizeof(char *), *strcmp_first_letter);
 }
 void  sort_qsort_last_letter(poem *text)  {
-    qsort(text->sorting, text->NUMBER, sizeof(char **), *strcmp_last_letter);
+    qsort(text->sorting, text->NUMBER, sizeof(char *), *strcmp_last_letter);
 }
 
 int strcmp_first_letter(const void *s_, const void *t_)  {
+
     assert((t_ != nullptr) && "null pointer");
     assert((s_ != nullptr) && "null pointer");
 
-    const char* t = (const char*) t_;
-    const char* s = (const char*) s_;
+    const char* t = *((const char**) t_);
+    const char* s = *((const char**) s_);
 
-    for (; *t != '\0' && *s != '\0';) {        
-        if (isalpha(*s) == 0)  {
+    // for (; *t != '\0' && *s != '\0';) {        
+    //     if (isalpha(*s) == 0)  {
+    //         s++;
+    //         continue;
+    //     } else if (isalpha(*t) == 0) {
+    //         t++;
+    //         continue;
+    //     } else if (toupper(*s) == toupper(*t)) {
+    //         s++; t++;
+    //         continue;
+    //     } 
+    //     break;
+    // }
+    // return *s - *t;
+    int dif = 0;
+    while (dif == 0 ) {
+        while (*s != '\0' && isalpha(*s) == 0)
             s++;
-            continue;
-        } else if (isalpha(*t) == 0) {
+        while (*t != '\0' && isalpha(*t) == 0)
             t++;
-            continue;
-        } else if (toupper(*s) == toupper(*t)) {
-            s++; t++;
-            continue;
-        }
-        break;
+    
+        if (dif != 0 || *t == '\0' || *s == '\0')
+            return dif;
+        dif = *s - *t;
+        s++;
+        t++;
     }
-    return *s - *t;
+    return dif;
 }
 
 void sort_first_letter(char **sort, int NUMBER)  {
@@ -46,14 +61,16 @@ void sort_first_letter(char **sort, int NUMBER)  {
 }
 
 int strcmp_last_letter(const void *s_, const void *t_)  {
-    const char* t = (const char*) t_;
-    const char* s = (const char*) s_;
+
+    const char* t = *((const char**) t_);
+    const char* s = *((const char**) s_);
 
     assert(s != nullptr && "null pointer");
     assert(t != nullptr && "null pointer");
 
     const char *ps = s;
     const char *pt = t;
+    // структура на строчки
     t += strlen(t) - 1;
     s += strlen(s) - 1;
 
