@@ -2,10 +2,11 @@
 #include "include.h"
 
 void  sort_qsort_first_letter(poem *text) {
-    qsort(text->sorting, text->NUMBER, sizeof(char *), *strcmp_first_letter);
+    qsort(text->sorting, text->NUMBER, sizeof(char *), strcmp_first_letter);
 }
+
 void  sort_qsort_last_letter(poem *text)  {
-    qsort(text->sorting, text->NUMBER, sizeof(char *), *strcmp_last_letter);
+    qsort(text->sorting, text->NUMBER, sizeof(char *), strcmp_last_letter);
 }
 
 int strcmp_first_letter(const void *s_, const void *t_)  {
@@ -13,8 +14,9 @@ int strcmp_first_letter(const void *s_, const void *t_)  {
     assert((t_ != nullptr) && "null pointer");
     assert((s_ != nullptr) && "null pointer");
 
-    const char* t = *((const char**) t_);
-    const char* s = *((const char**) s_);
+    const char* t = (const char*) t_;
+    const char* s = (const char*) s_;
+
 
     // for (; *t != '\0' && *s != '\0';) {        
     //     if (isalpha(*s) == 0)  {
@@ -46,13 +48,14 @@ int strcmp_first_letter(const void *s_, const void *t_)  {
     return dif;
 }
 
-void sort_first_letter(char **sort, int NUMBER)  {
-    assert(sort != nullptr && "null pointer");
+void my_sort(void *sort_, int NUMBER, size_t,  int strcmp(const void *s, const void *t))  {
+    assert(sort_ != nullptr && "null pointer");
+    char **sort = (char **)sort_;
     
     for(int i = 0 ; i < (NUMBER - 1); i++) { 
        for(int j = 0 ; j < NUMBER - i - 1 ; j++) {  
-           if(strcmp_first_letter(sort[j], sort[j+1]) > 0) {          
-              char *tmp = sort[j];
+           if(strcmp((const void*)sort[j], (const void*)sort[j+1]) > 0) {          
+              char *tmp =(char*) sort[j];
               sort[j] = sort[j+1];
               sort[j+1] = tmp; 
            }
@@ -61,9 +64,8 @@ void sort_first_letter(char **sort, int NUMBER)  {
 }
 
 int strcmp_last_letter(const void *s_, const void *t_)  {
-
-    const char* t = *((const char**) t_);
-    const char* s = *((const char**) s_);
+    const char* t = ((const char*) t_);
+    const char* s = ((const char*) s_);
 
     assert(s != nullptr && "null pointer");
     assert(t != nullptr && "null pointer");
@@ -90,17 +92,4 @@ int strcmp_last_letter(const void *s_, const void *t_)  {
     return *s - *t;
 }
 
-void sort_last_letter(char **sort, int NUMBER)  {    
-    assert(sort != nullptr && "null pointer");
-
-    for(int i = 0 ; i < (NUMBER - 1); i++) { 
-       for(int j = 0 ; j < NUMBER - i - 1 ; j++) {  
-           if (strcmp_last_letter(sort[j], sort[j+1]) > 0) {           
-              char *tmp = sort[j];
-              sort[j] = sort[j+1];
-              sort[j+1] = tmp; 
-           }
-        }
-    }
-}
 

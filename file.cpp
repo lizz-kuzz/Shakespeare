@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include "include.h"
 
-char *read_file()  {
-    const char *INPUT_FILE_WITH_TEXT = "C:\\Users\\User\\Desktop\\programs\\shakespeare\\shakespeare.txt";
+char *read_file(const char *TEXT)  {
 
-    FILE *file = fopen(INPUT_FILE_WITH_TEXT, "r");
+    FILE *file = fopen(TEXT, "r");
 
     assert(file != nullptr && "coudn't open file");
 
@@ -52,10 +51,19 @@ void text_cpy(poem *text, poem *cpy_text) {
     }
     
 }
+void printing_to_file(FILE *file, poem *text) {
+    for (int i = 0; i < text->NUMBER; i++)
+        fprintf(file, "%s\n", text->sorting[i]); 
+}
 
-void sorting_and_print_to_file(poem *text)  {
+void print_header(const char* WORD, FILE *file_write) {
+    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
+    fprintf(file_write, "                    %s                        ", WORD);
+    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
+}
 
-    const char *NAME_OF_FILE =  "C:\\Users\\User\\Desktop\\programs\\shakespeare\\shakespeare_write.txt";
+
+void sorting_and_print_to_file(poem *text, const char *NAME_OF_FILE)  {
     
     poem cpy_text = {
         .poem = NULL,
@@ -68,35 +76,24 @@ void sorting_and_print_to_file(poem *text)  {
     FILE *file_write = fopen(NAME_OF_FILE, "w");
 
     assert(file_write != nullptr && "coudn't open file");
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-    fprintf(file_write, "                    TEXT SORTED BY FIRST LETTERS                        ");
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-    sort_qsort_first_letter(text);
-    sort_first_letter(text->sorting, text->NUMBER);
 
-    for (int i = 0; i < text->NUMBER; i++)
-        fprintf(file_write, "%s\n", text->sorting[i]); 
-
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-    fprintf(file_write, "                    TEXT SORTED BY LAST LETTERS                         ");
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-    sort_qsort_last_letter(text);
-    // sort_last_letter(text->sorting, text->NUMBER);
-
-    for (int i = 0; i < text->NUMBER; i++)
-        fprintf(file_write, "%s\n", text->sorting[i]);
-
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-    fprintf(file_write, "                          SOURCE TEXT                                   ");
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-
-    for (int i = 0; i < cpy_text.NUMBER; i++)
-        fprintf(file_write, "%s\n", cpy_text.sorting[i]); 
-
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-    fprintf(file_write, "                              END                                       ");
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
+    print_header("TEXT SORTED BY FIRST LETTERS", file_write);
     
+    // sort_qsort_first_letter(text);
+    my_sort(text->sorting, text->NUMBER, sizeof(char*), strcmp_first_letter);
+
+    printing_to_file(file_write, text);
+    print_header("TEXT SORTED BY LAST LETTERS", file_write);
+
+    // sort_qsort_last_letter(text);
+    my_sort(text->sorting, text->NUMBER, sizeof(char*), strcmp_last_letter);
+
+    printing_to_file(file_write, text);
+    print_header("SOURCE TEXT", file_write);
+
+    printing_to_file(file_write, &cpy_text);
+    print_header("END", file_write);
+
     fclose(file_write);
     free(text->sorting);
     free(cpy_text.sorting);
@@ -124,7 +121,8 @@ void text_normalize(poem *text)  {
             if ((*(point + 1)) == ' ' && (*(point + 2)) == ' ' &&
                 (*(point + 3)) == ' ' && (*(point + 4)) == ' ')  { 
                 text->sorting[i] = point + 5;
-                point += 4; }
+                point += 4; 
+            }
             text->sorting[i] = point + 1;
             count++;
             i++;
