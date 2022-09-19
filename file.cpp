@@ -67,7 +67,7 @@ void create_arr_str(poem *text) {
     for (int i = 0; i < text->NUMBER; i++) {
         text->arr_str[i].string = text->sorting[i];
         text->arr_str[i].len = strlen(text->sorting[i]);
-        printf("ind i = %d,\nstr %s,\n len = %d\n", i, text->arr_str[i].string, text->arr_str[i].len);
+        // printf("ind i = %d,\nstr %s,\n len = %d\n", i, text->arr_str[i].string, text->arr_str[i].len);
     }
 }
 
@@ -81,8 +81,7 @@ void  sorting_and_print_to_file(poem *text, const char *NAME_OF_FILE)  {
     // };
 
     // text_cpy(text, &cpy_text);
-    text->arr_str = (string *) calloc (text->NUMBER + 1, sizeof(string));
-    create_arr_str(text);
+ 
 
     FILE *file_write = fopen(NAME_OF_FILE, "w");
 
@@ -90,15 +89,18 @@ void  sorting_and_print_to_file(poem *text, const char *NAME_OF_FILE)  {
 
     print_header("TEXT SORTED BY FIRST LETTERS", file_write);
 
-    sort_qsort_first_letter(text);
+    // sort_qsort_first_letter(text);
+    sort_my_qsort_first_letter(text);
 
-    // my_buble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_first_letter);
+    // my_bubble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_first_letter);
 
     printing_to_file(file_write, text->arr_str, text->NUMBER);
     print_header("TEXT SORTED BY LAST LETTERS", file_write);
  
-    sort_qsort_last_letter(text);
-    // my_buble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_last_letter);
+    // sort_qsort_last_letter(text);
+    sort_my_qsort_last_letter(text);
+
+    // my_bubble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_last_letter);
     printing_to_file(file_write, text->arr_str, text->NUMBER);
 
     print_header("SOURCE TEXT", file_write);
@@ -146,4 +148,7 @@ void text_normalize(poem *text)  {
         }
     }
     text->NUMBER = count;
+
+    text->arr_str = (string *) calloc (text->NUMBER + 1, sizeof(string));
+    create_arr_str(text);
 }
