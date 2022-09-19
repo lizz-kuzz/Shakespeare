@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "include.h"
 
 char *read_file(const char *TEXT)  {
@@ -51,9 +50,9 @@ void text_cpy(poem *text, poem *cpy_text) {
     }
     
 }
-void printing_to_file(FILE *file, poem *text) {
-    for (int i = 0; i < text->NUMBER; i++)
-        fprintf(file, "%s\n", text->sorting[i]); 
+void printing_to_file(FILE *file, string *text, int NUMBER) {
+    for (int i = 0; i < NUMBER; i++)
+        fprintf(file, "%s\n", text[i].string); 
 }
 
 void print_header(const char* WORD, FILE *file_write) {
@@ -62,41 +61,59 @@ void print_header(const char* WORD, FILE *file_write) {
     fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
 }
 
+void create_arr_str(poem *text) {
+    assert(text != nullptr && "null pointer");
 
-void sorting_and_print_to_file(poem *text, const char *NAME_OF_FILE)  {
+    for (int i = 0; i < text->NUMBER; i++) {
+        text->arr_str[i].string = text->sorting[i];
+        text->arr_str[i].len = strlen(text->sorting[i]);
+        printf("ind i = %d,\nstr %s,\n len = %d\n", i, text->arr_str[i].string, text->arr_str[i].len);
+    }
+}
+
+
+void  sorting_and_print_to_file(poem *text, const char *NAME_OF_FILE)  {
     
-    poem cpy_text = {
-        .poem = NULL,
-        .sorting = NULL,
-        .NUMBER = 0,
-    };
+    // poem cpy_text = {
+    //     .poem = NULL,
+    //     .sorting = NULL,
+    //     .NUMBER = 0,
+    // };
 
-    text_cpy(text, &cpy_text);
+    // text_cpy(text, &cpy_text);
+    text->arr_str = (string *) calloc (text->NUMBER + 1, sizeof(string));
+    create_arr_str(text);
 
     FILE *file_write = fopen(NAME_OF_FILE, "w");
 
     assert(file_write != nullptr && "coudn't open file");
 
     print_header("TEXT SORTED BY FIRST LETTERS", file_write);
-    
-    // sort_qsort_first_letter(text);
-    my_sort(text->sorting, text->NUMBER, sizeof(char*), strcmp_first_letter);
 
-    printing_to_file(file_write, text);
+    sort_qsort_first_letter(text);
+
+    // my_buble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_first_letter);
+
+    printing_to_file(file_write, text->arr_str, text->NUMBER);
     print_header("TEXT SORTED BY LAST LETTERS", file_write);
+ 
+    sort_qsort_last_letter(text);
+    // my_buble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_last_letter);
+    printing_to_file(file_write, text->arr_str, text->NUMBER);
 
-    // sort_qsort_last_letter(text);
-    my_sort(text->sorting, text->NUMBER, sizeof(char*), strcmp_last_letter);
-
-    printing_to_file(file_write, text);
     print_header("SOURCE TEXT", file_write);
-
-    printing_to_file(file_write, &cpy_text);
+    printing_to_file_text(file_write, text);
     print_header("END", file_write);
 
     fclose(file_write);
     free(text->sorting);
-    free(cpy_text.sorting);
+    // free(cpy_text.sorting);
+    free(text->arr_str);
+}
+
+void printing_to_file_text(FILE *file, poem *text) {
+    for (int i = 0; i < text->NUMBER; i++)
+        fprintf(file, "%s\n", text->sorting[i]); 
 }
 
 void text_normalize(poem *text)  {

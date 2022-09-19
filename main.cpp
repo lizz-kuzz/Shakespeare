@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "include.h"
 
 int main()
@@ -9,9 +8,9 @@ int main()
   poem shakespeare = {
     .poem = NULL,
     .sorting = NULL,
+    .arr_str = NULL,
     .NUMBER = 0,
   };
-
   shakespeare.poem = read_file(INPUT_FILE_WITH_TEXT);  
 
   assert(shakespeare.poem != NULL && "null pointer");
