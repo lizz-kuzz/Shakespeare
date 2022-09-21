@@ -1,7 +1,12 @@
-#include "include.h"
+#include "file.hpp"
+#include "sort.hpp"
 
-char *read_file(const char *TEXT)  {
+static int   count_symbols(FILE *file);
+static int   num_of_rows  (char *text); 
+static void  free_text    (poem *text);
 
+
+void read_file(const char *TEXT, poem *shakespeare) {
     FILE *file = fopen(TEXT, "r");
 
     assert(file != nullptr && "coudn't open file");
@@ -9,18 +14,22 @@ char *read_file(const char *TEXT)  {
     if (file == NULL)
         printf("Could not open file.\n");
     
-    const int SYMBOLS = count_symbols(file);
+    int SYMBOLS = count_symbols(file);
+
     char *reading_file = (char *) calloc(SYMBOLS + 1, sizeof(char));  
+    assert(reading_file != nullptr && "null pointer");
 
     fread(reading_file, sizeof(char), SYMBOLS, file);
-    fclose(file);
 
-    return reading_file;
+    text_normalize(shakespeare, reading_file);
+
+    fclose(file);
 }
 
-int num_of_rows(char *text)  {
+static int num_of_rows(char *text)  {
     int count = 0;
     char *point = text;
+
     while (*point != '\0')  {
         if (*point == '\n')
             count++;
@@ -29,126 +38,115 @@ int num_of_rows(char *text)  {
     return count;
 }
 
-int count_symbols(FILE *file)  {
-// stat, getsize
+static int count_symbols(FILE *file)  {
     fseek(file, 0, SEEK_END);
+    
     int number = ftell(file);
+
     fseek(file, 0, SEEK_SET);
 
     return number;
 }
 
+static void free_text(poem *text) {
+    free(text->normal_text);
+    free(text->arr_str);
+}
+
+void  text_normalize(poem *text, char *text_poem) {
+    assert(text      != nullptr && "null pointer");
+    assert(text_poem != nullptr && "null pointer");
+
+
+    text->normal_text = (char **) calloc(text->NUMBER + 1, sizeof(char *));
+    text->arr_str =    (string *) calloc(text->NUMBER + 1, sizeof(string)); 
+   
+    assert(text->normal_text != NULL && "null pointer");
+    assert(text->arr_str     != NULL && "null pointer");
+
+    char *ptr_point = text_poem;
+    text->normal_text[0] = ptr_point;
+    text->arr_str[0].string = ptr_point;
+    text->NUMBER = num_of_rows(text_poem);
+
+    int count = 0;
+
+    for (int i = 1; i <= text->NUMBER && *ptr_point != '\0'; ptr_point++)  { 
+        if (*ptr_point == '\n')  {
+            *ptr_point = '\0';
+            text->arr_str[i-1].len = strlen(text->normal_text[i-1]);
+
+            if ((*(ptr_point + 1)) == '\n') 
+                continue;
+            // if ((*(ptr_point + 1)) == ' ' && (*(ptr_point + 2)) == ' ' &&           
+            //     (*(ptr_point + 3)) == ' ' && (*(ptr_point + 4)) == ' ')  { 
+            //     text->normal_text[i] = ptr_point + 5;
+            //     ptr_point += 4;
+            // }
+            text->normal_text[i] = ptr_point + 1;
+            text->arr_str[i].string = ptr_point + 1;
+            count++;
+            i++;
+        }
+    }
+
+    text->NUMBER = count;
+
+    text->normal_text = (char **)  realloc(text->normal_text, text->NUMBER + 1);
+    text->arr_str     = (string *) realloc(text->arr_str,     text->NUMBER + 1); 
+}
+
 void text_cpy(poem *text, poem *cpy_text) {
-    assert(text != nullptr && "coudn't open file");
-    assert(cpy_text != nullptr && "coudn't open file");
+    assert(text     != nullptr && "null pointer");
+    assert(cpy_text != nullptr && "null pointer");
 
     cpy_text->NUMBER = text->NUMBER;
-    cpy_text->sorting = (char **) calloc(text->NUMBER + 1, sizeof(char *)); 
+    cpy_text->normal_text = (char **) calloc(text->NUMBER + 1, sizeof(char *)); 
 
     for (int i = 0; (i <= cpy_text->NUMBER); i++)  { 
-        cpy_text->sorting[i] = text->sorting[i];
+        cpy_text->normal_text[i] = text->normal_text[i];
     }
     
 }
-void printing_to_file(FILE *file, string *text, int NUMBER) {
-    for (int i = 0; i < NUMBER; i++)
-        fprintf(file, "%s\n", text[i].string); 
-}
-
-void print_header(const char* WORD, FILE *file_write) {
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-    fprintf(file_write, "                    %s                        ", WORD);
-    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
-}
-
-void create_arr_str(poem *text) {
-    assert(text != nullptr && "null pointer");
-
-    for (int i = 0; i < text->NUMBER; i++) {
-        text->arr_str[i].string = text->sorting[i];
-        text->arr_str[i].len = strlen(text->sorting[i]);
-        // printf("ind i = %d,\nstr %s,\n len = %d\n", i, text->arr_str[i].string, text->arr_str[i].len);
-    }
-}
-
 
 void  sorting_and_print_to_file(poem *text, const char *NAME_OF_FILE)  {
-    
-    // poem cpy_text = {
-    //     .poem = NULL,
-    //     .sorting = NULL,
-    //     .NUMBER = 0,
-    // };
-
-    // text_cpy(text, &cpy_text);
- 
-
     FILE *file_write = fopen(NAME_OF_FILE, "w");
 
     assert(file_write != nullptr && "coudn't open file");
 
     print_header("TEXT SORTED BY FIRST LETTERS", file_write);
-
     // sort_qsort_first_letter(text);
-    sort_my_qsort_first_letter(text);
+    // sort_my_qsort_first_letter(text);
+    my_bubble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_first_letter);
+    printing_to_file_arr_string(file_write, text->arr_str, text->NUMBER);
 
-    // my_bubble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_first_letter);
-
-    printing_to_file(file_write, text->arr_str, text->NUMBER);
     print_header("TEXT SORTED BY LAST LETTERS", file_write);
- 
     // sort_qsort_last_letter(text);
-    sort_my_qsort_last_letter(text);
-
-    // my_bubble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_last_letter);
-    printing_to_file(file_write, text->arr_str, text->NUMBER);
+    // sort_my_qsort_last_letter(text);
+    my_bubble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_last_letter);
+    printing_to_file_arr_string(file_write, text->arr_str, text->NUMBER);
 
     print_header("SOURCE TEXT", file_write);
     printing_to_file_text(file_write, text);
     print_header("END", file_write);
 
     fclose(file_write);
-    free(text->sorting);
-    // free(cpy_text.sorting);
-    free(text->arr_str);
+    free_text(text);
+}
+
+
+void printing_to_file_arr_string(FILE *file, string *text, int NUMBER) {
+    for (int i = 0; i < NUMBER; i++)
+        fprintf(file, "%s\n", text[i].string); 
 }
 
 void printing_to_file_text(FILE *file, poem *text) {
     for (int i = 0; i < text->NUMBER; i++)
-        fprintf(file, "%s\n", text->sorting[i]); 
+        fprintf(file, "%s\n", text->normal_text[i]); 
 }
 
-void text_normalize(poem *text)  {
-    assert(text != nullptr && "null pointer");
-    assert(text->poem != NULL && "null pointer");
-
-    text->NUMBER = num_of_rows(text->poem);
-
-    text->sorting = (char **) calloc(text->NUMBER + 1, sizeof(char *));
-   
-    assert(text->sorting != NULL && "null pointer");
-
-    char *point = text->poem;
-    text->sorting[0] = point;
-    int count = 0;
-
-    for (int i = 1; (i <= text->NUMBER) && *(point) != '\0'; point++)  { 
-        if (*point == '\n')  {
-            *point = '\0';
-            if ((*(point + 1)) == '\n')
-                continue;
-            if ((*(point + 1)) == ' ' && (*(point + 2)) == ' ' &&
-                (*(point + 3)) == ' ' && (*(point + 4)) == ' ')  { 
-                text->sorting[i] = point + 5;
-                point += 4; 
-            }
-            text->sorting[i] = point + 1;
-            count++;
-            i++;
-        }
-    }
-    text->NUMBER = count;
-
-    text->arr_str = (string *) calloc (text->NUMBER + 1, sizeof(string));
-    create_arr_str(text);
+void print_header(const char* WORD, FILE *file_write) {
+    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
+    fprintf(file_write, "                    %s                        ", WORD);
+    fprintf(file_write, "\n\n\n------------------------------------------------------------\n\n\n");
 }

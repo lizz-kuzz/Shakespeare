@@ -1,20 +1,4 @@
-#include "include.h"
-
-void  sort_qsort_first_letter(poem *text) {
-    qsort(text->arr_str, text->NUMBER, sizeof(string), strcmp_first_letter);
-}
-
-void  sort_qsort_last_letter(poem *text)  {
-    qsort(text->arr_str, text->NUMBER, sizeof(string), strcmp_last_letter);
-}
-
-void  sort_my_qsort_first_letter(poem *text) {
-    my_qsort(text->arr_str, 0, text->NUMBER - 1, sizeof(string),  strcmp_first_letter);
-}
-
-void  sort_my_qsort_last_letter(poem *text)  {
-    my_qsort(text->arr_str, 0, text->NUMBER - 1, sizeof(string),  strcmp_last_letter);
-}
+#include "sort.hpp"
 
 int strcmp_first_letter(const void *s_, const void *t_)  {
 
@@ -37,6 +21,36 @@ int strcmp_first_letter(const void *s_, const void *t_)  {
         str1++; str2++;
     }
     return dif;
+}
+
+int strcmp_last_letter(const void *s_, const void *t_)  { // rename
+   
+    assert((s_ != nullptr) && "null pointer");
+    assert((t_ != nullptr) && "null pointer");
+
+    char* str1 = ((const string *) s_)->string;
+    char* str2 = ((const string *) t_)->string;
+
+    char *p1 = str1;
+    char *p2 = str2;
+
+    str1 += ((const string *) s_)->len - 1;
+    str2 += ((const string *) t_)->len - 1;
+
+    for (; str1 >= p1 && str2 >= p2 && *str1 != '\0' && *str2 != '\0'; ) {
+        if (isalpha(*str1) == 0) {
+                str1--;
+            continue;
+        } else if (isalpha(*str2) == 0) {
+            str2--;
+            continue;
+        } else if (tolower(*str1) == tolower(*str2)) {
+            str1--; str2--;
+            continue;
+        } 
+        break;
+    }
+    return *str1 - *str2;
 }
 
 void swap(char *p1, char *p2, size_t SIZE) {
@@ -65,35 +79,6 @@ void my_bubble_sort(void *sort_, size_t NUMBER, size_t SIZE,  int (* strcmp)(con
     } 
 }
 
-int strcmp_last_letter(const void *s_, const void *t_)  {
-   
-    assert((s_ != nullptr) && "null pointer");
-    assert((t_ != nullptr) && "null pointer");
-
-    char* str1 = ((const string *) s_)->string;
-    char* str2 = ((const string *) t_)->string;
-
-    char *p1 = str1;
-    char *p2 = str2;
-
-    str1 += ((const string *) s_)->len - 1;
-    str2 += ((const string *) t_)->len - 1;
-
-    for (; str1 >= p1 && str2 >= p2 && *str1 != '\0' && *str2 != '\0'; ) {
-        if (isalpha(*str1) == 0) {
-            str1--;
-            continue;
-        } else if (isalpha(*str2) == 0) {
-            str2--;
-            continue;
-        } else if (tolower(*str1) == tolower(*str2)) {
-            str1--; str2--;
-            continue;
-        } 
-        break;
-    }
-    return *str1 - *str2;
-}
 
 
 int partition (void *sort_, int LOW, int NUMBER, size_t SIZE, int (*strcmp)(const void *s, const void *t)) {
@@ -108,7 +93,7 @@ int partition (void *sort_, int LOW, int NUMBER, size_t SIZE, int (*strcmp)(cons
         }
     }
 
-    swap (sort + (i + 1)*SIZE, sort + NUMBER*SIZE, SIZE);
+    swap(sort + (i + 1)*SIZE, sort + NUMBER*SIZE, SIZE);
 	return (i + 1);
 }
 
@@ -119,4 +104,20 @@ void  my_qsort(void *sort, int LOW, int NUMBER, size_t SIZE,  int (*strcmp)(cons
 		my_qsort(sort, LOW, i-1, SIZE, strcmp);
 		my_qsort(sort, i+1, NUMBER, SIZE, strcmp);
 	}
+}
+
+void  sort_qsort_first_letter(poem *text) {
+    qsort(text->arr_str, text->NUMBER, sizeof(string), strcmp_first_letter);
+}
+
+void  sort_qsort_last_letter(poem *text)  {
+    qsort(text->arr_str, text->NUMBER, sizeof(string), strcmp_last_letter);
+}
+
+void  sort_my_qsort_first_letter(poem *text) {
+    my_qsort(text->arr_str, 0, text->NUMBER - 1, sizeof(string),  strcmp_first_letter);
+}
+
+void  sort_my_qsort_last_letter(poem *text)  {
+    my_qsort(text->arr_str, 0, text->NUMBER - 1, sizeof(string),  strcmp_last_letter);
 }
