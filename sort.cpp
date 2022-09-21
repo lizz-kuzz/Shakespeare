@@ -57,10 +57,36 @@ void swap(char *p1, char *p2, size_t SIZE) {
     assert((p1 != nullptr) && "null pointer");
     assert((p2 != nullptr) && "null pointer");
 
-    while(SIZE--) {
-        char tmp = *p1;
-        *p1++ = *p2;
-        *p2++ = tmp;
+    if (SIZE >= sizeof(long double)) {
+        int count = SIZE / sizeof(long double);
+        while (count--) {
+            long double tmp = *p1;
+            *p1++ = *p2;
+            *p2++ = tmp;
+            SIZE -=  sizeof(long double);
+        }
+    } else if (SIZE >= sizeof(long int)) {
+        int count = SIZE / sizeof(long int);
+        while (count--) {
+            long int tmp = *p1;
+            *p1++ = *p2;
+            *p2++ = tmp;
+            SIZE -=  sizeof(long int);
+        }
+    } else if (SIZE >= sizeof(int)) {
+        int count = SIZE / sizeof(int);
+        while (count--) {
+            int tmp = *p1;
+            *p1++ = *p2;
+            *p2++ = tmp;
+            SIZE -=  sizeof(int);
+        }
+    } else {
+        while (SIZE--) {
+            char tmp = *p1;
+            *p1++ = *p2;
+            *p2++ = tmp;
+        }
     }
 }
 
@@ -78,8 +104,6 @@ void my_bubble_sort(void *sort_, size_t NUMBER, size_t SIZE,  int (* strcmp)(con
         }
     } 
 }
-
-
 
 int partition (void *sort_, int LOW, int NUMBER, size_t SIZE, int (*strcmp)(const void *s, const void *t)) {
     char *sort = (char *)sort_;

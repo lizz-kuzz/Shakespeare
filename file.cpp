@@ -78,11 +78,7 @@ void  text_normalize(poem *text, char *text_poem) {
 
             if ((*(ptr_point + 1)) == '\n') 
                 continue;
-            // if ((*(ptr_point + 1)) == ' ' && (*(ptr_point + 2)) == ' ' &&           
-            //     (*(ptr_point + 3)) == ' ' && (*(ptr_point + 4)) == ' ')  { 
-            //     text->normal_text[i] = ptr_point + 5;
-            //     ptr_point += 4;
-            // }
+                
             text->normal_text[i] = ptr_point + 1;
             text->arr_str[i].string = ptr_point + 1;
             count++;
