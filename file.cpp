@@ -102,9 +102,9 @@ void  sorting_and_print_to_file(poem *text, const char *NAME_OF_FILE)  {
     assert(file_write != nullptr && "coudn't open file");
 
     print_header("TEXT SORTED BY FIRST LETTERS", file_write);
-    sort_qsort_first_letter(text);
+    // sort_qsort_first_letter(text);
     // sort_my_qsort_first_letter(text);
-    // my_bubble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_first_letter);
+    my_bubble_sort(text->arr_str, text->NUMBER, sizeof(string), strcmp_first_letter);
     printing_to_file_arr_string(file_write, text->arr_str, text->NUMBER);
 
     print_header("TEXT SORTED BY LAST LETTERS", file_write);
