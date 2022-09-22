@@ -5,8 +5,7 @@
 
 void  read_file                  (const char *TEXT, poem *shakespeare);
 
-void  text_normalize             (poem *text, char *text_poem);
-void  text_cpy                   (poem *text, poem *cpy_text);
+void  text_normalize             (poem *text);
 
 void  printing_to_file_text      (FILE *file, poem *text);
 void  printing_to_file_arr_string(FILE *file, string *text, int NUMBER);

@@ -13,7 +13,7 @@ typedef struct {
 } string;
 
 typedef struct {
-    char  **normal_text;
+    char   *text;
     string *arr_str;
     int     NUMBER;
 } poem;
