@@ -1,9 +1,9 @@
 #include "file.hpp"
 #include "sort.hpp"
 
-static int   num_of_rows  (char *text); 
-static int   count_symbols(FILE *file);
-static void  free_text    (poem *text);
+static int        num_of_rows  (char *text); 
+static long int   count_symbols(FILE *file);
+static void       free_text    (poem *text);
 
 
 void read_file(const char *TEXT, poem *shakespeare) {
@@ -14,7 +14,7 @@ void read_file(const char *TEXT, poem *shakespeare) {
     if (file == NULL)
         printf("Could not open file.\n");
     
-    int SYMBOLS = count_symbols(file);
+    long int SYMBOLS = count_symbols(file);
 
     shakespeare->text = (char *) calloc(SYMBOLS + 1, sizeof(char)); 
 
@@ -39,10 +39,10 @@ static int num_of_rows(char *text)  {
     return count;
 }
 
-static int count_symbols(FILE *file)  {
+static long int count_symbols(FILE *file)  {
     fseek(file, 0, SEEK_END);
     
-    int number = ftell(file);
+    long int number = ftell(file);
 
     fseek(file, 0, SEEK_SET);
 
