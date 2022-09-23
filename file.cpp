@@ -1,8 +1,8 @@
 #include "file.hpp"
 #include "sort.hpp"
 
-static int   count_symbols(FILE *file);
 static int   num_of_rows  (char *text); 
+static int   count_symbols(FILE *file);
 static void  free_text    (poem *text);
 
 
@@ -50,10 +50,6 @@ static int count_symbols(FILE *file)  {
 }
 
 static void free_text(poem *text) {
-    // for (int i = 0; i < text->NUMBER; i++) {
-        // free(text->normal_text[i]);
-        // printf("%s", text->normal_text[i]);
-    // }
     free(text->text);
     free(text->arr_str);
 }
@@ -63,7 +59,7 @@ void text_normalize(poem *text)  {
 
     text->NUMBER = num_of_rows(text->text);
 
-    text->arr_str = (string *) calloc (text->NUMBER + 1, sizeof(string));
+    text->arr_str = (string *) calloc(text->NUMBER + 1, sizeof(string));
 
     assert(text->arr_str != NULL && "null pointer");
 
@@ -127,10 +123,11 @@ void printing_to_file_arr_string(FILE *file, string *text, int NUMBER) {
 }
 
 void printing_to_file_text(FILE *file, poem *text) {
+    char *ptr = text->text;
     for (int i = 0; i < text->NUMBER; i++) {
-        fprintf(file, "%s\n", text->text); 
-        for (; *text->text != '\0'; text->text++) continue;
-        (text->text)++;
+        fprintf(file, "%s\n", ptr); 
+        for (; *ptr != '\0'; ptr++) continue;
+        (ptr)++;
     }
 }
 
